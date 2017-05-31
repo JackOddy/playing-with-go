@@ -3,11 +3,16 @@ package main
 func main() {
 	x := 1
 	y := 2
-	swap(&x, &y)
+	swap(&x)(&y)
 	println(x, y)
 }
 
-func swap(x, y *int) {
-	defer func(n int) { *x = n }(*y)
-	*y = *x
+func swap(x *int) func(*int) {
+	xn := *x
+	return func(y *int) {
+		yn := *y
+		*x = yn
+		*y = xn
+	}
+
 }
